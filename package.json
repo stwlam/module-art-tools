@@ -1,0 +1,8 @@
+{
+  "name": "pf2e-module-art",
+  "version": "0.0.1",
+  "dependencies": {
+    "csv": "^6.2.0",
+    "yargs": "^17.5.1"
+  }
+}
