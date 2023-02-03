@@ -10,7 +10,7 @@ const args = yargs(process.argv.slice(2))
         () => {
           yargs
             .positional("filename", {
-              describe: "A CSV filename. The first column of the CSV is ignored. Columns 2-5 should be compendium ID, actor ID, actor image path, token image path, and finally an optional scale antecedent (consequent of 1).",
+              describe: "A CSV filename. The first column of the CSV is ignored. Columns 2-6 should be compendium ID, actor ID, actor image path, token image path, and an optional scale-ratio antecedent (consequent of 1), and an optional boolean indicating whether random images are to be enabled.",
             });
         }
       )
@@ -28,9 +28,12 @@ const jsonData = parser.parse(csvData).slice(1).map((row) => ({
   id: row[2],
   actor: row[3],
   token: row[5].trim() ? { img: row[4], scale: Number(row[5]) } : row[4],
+  randomImg: !!row[6],
 })).reduce((accum, row) => {
   accum[row.pack] ??= {};
   accum[row.pack][row.id] = { actor: row.actor, token: row.token };
+  if (row.randomImg) accum[row.pack][row.id].randomImg = true;
+
   return accum;
 }, {});
 
