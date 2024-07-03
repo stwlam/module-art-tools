@@ -3,11 +3,10 @@ const parser = require("csv-parse/sync");
 const process = require("process");
 const yargs = require("yargs");
 
-function createTokenObject(token, ring) {
-  if ( ring.subject.scale ) { 
-    token.ring = ring
-    token.flags = {pf2e: {linkToActorSize: false}} 
-  } 
+function createTokenObject(token) {
+  if ( !token.ring.subject.scale ) {
+    delete token.ring.subject
+  }
   return token
 }
 
@@ -52,17 +51,23 @@ const jsonData = parser
             src: row[4], 
             scaleX: Number(row[5]) || undefined, 
             scaleY: Number(row[5]) || undefined,   
+          },
+          ring: {
+            enabled: true,
+            subject: {
+              scale: Number(row[5]) || undefined
+            }
+          },
+          flags: { 
+            pf2e: {
+              autoscale: false
+            }
           }
         },
-        ring: {
-          subject: {
-            scale: Number(row[5]) || undefined
-          }
-        }
     }))
     .reduce((accum, row) => {
         accum[row.pack] ??= {};
-        accum[row.pack][row.id] = { actor: row.actor, token: createTokenObject(row.token, row.ring) };
+        accum[row.pack][row.id] = { actor: row.actor, token: createTokenObject(row.token) };
         return accum;
     }, {});
 
