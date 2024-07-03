@@ -30,11 +30,7 @@ const jsonData = parser
         pack: row[1],
         id: row[2],
         actor: row[3],
-        token:
-            row[5].trim() || row[6]
-                ? { img: row[4], scale: Number(row[5]) || undefined, randomImg: !!row[6] || undefined }
-                : row[4],
-        randomImg: !!row[6],
+        token: { img: row[4], scale: Number(row[5]) || undefined, randomImg: !!row[6] || undefined }
     }))
     .reduce((accum, row) => {
         accum[row.pack] ??= {};
