@@ -11,20 +11,17 @@ const args = yargs(process.argv.slice(2))
           yargs
             .positional("filename", {
               describe: `Input is a CSV with the following data in each column: 
-              A = label (string)
-              B = key (string)
-              C = source book (string)
-              D = portrait (filepath)
-              E = thumbnail (filepath)
-              F = token (filepath)
-              G = subject (filepath)
-              H = scale (number)
-              I = ancestry tags (csv string => array)
-              J = armor tags (csv string => array)
-              K = equipment tags (csv string => array)
-              L = ability tags (csv string => array)
-              M = feature tags (csv string => array)
-              N = unique? (string)
+              - ignored
+              - key (string)
+              - label (string)
+              - source book (string)
+              - scale (num) 
+              - ancestry tags (csv string => array)
+              - armor tags (csv string => array)
+              - equipment tags (csv string => array)
+              - feature tags (csv string => array)
+              - family tags (csv string => array)
+              - special tags (csv string => array)
               `
             });
         }
@@ -43,23 +40,23 @@ const data = parser
     .parse(csvData)
     .slice(1)
     .map((row) => ({
-      "label": row[0],
+      "label": row[2],
       "key": row[1],
-      "source": row[2],
-      "unique": row[13] || undefined,
+      "source": row[3],
       "art": {
-        "portrait" : row[3],
-        "thumb" : row[4],
-        "token" : row[5],
-        "subject" : row[6],
-        "scale" : Number(row[7]) || undefined,
+        "portrait" : "modules/pf2e-tokens-gallery/assets/portraits/" + row[1] + ".webp",
+        "thumb" : "modules/pf2e-tokens-gallery/assets/thumbnails/" + row[1] + ".webp",
+        "token" : "modules/pf2e-tokens-gallery/assets/tokens/" + row[1] + ".webp",
+        "subject" : "modules/pf2e-tokens-gallery/assets/subjects/" + row[1] + ".webp",
+        "scale" : Number(row[4]) || undefined,
       },
       "tags":  {
-        "ancestry" : row[8] ? row[8].toLowerCase().split(",") : undefined,
-        "armor" : row[9] ? row[9].toLowerCase().split(",") : undefined,
-        "equipment" : row[10] ? row[10].toLowerCase().split(",") : undefined,
-        "abilities" : row[11] ? row[11].toLowerCase().split(",") : undefined,
-        "features" : row[12] ? row[12].toLowerCase().split(",") : undefined,
+        "ancestry" : row[5] ? row[5].toLowerCase().split(",") : undefined,
+        "armor" : row[6] ? row[6].toLowerCase().split(",") : undefined,
+        "equipment" : row[7] ? row[7].toLowerCase().split(",") : undefined,
+        "features" : row[8] ? row[8].toLowerCase().split(",") : undefined,
+        "family" : row[9] ? row[9].toLowerCase().split(",") : undefined,
+        "special" : row[10] ? row[9].toLowerCase().split(",") : undefined,
       },
     }))
     .map((element) => {
