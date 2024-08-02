@@ -57,11 +57,6 @@ const jsonData = parser
             subject: {
               scale: Number(row[5]) || undefined
             }
-          },
-          flags: { 
-            pf2e: {
-              autoscale: false
-            }
           }
         },
     }))
