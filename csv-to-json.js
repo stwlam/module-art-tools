@@ -4,9 +4,13 @@ const process = require("process");
 const yargs = require("yargs");
 
 function createTokenObject(token) {
+  /* 
+  //Deletes the subject object if there is no scale modification- basically, if you have set a subject assset substitution path, this option can reduce the number of redundant fields in this json. 
+  //It's currently disabled because I think it's arguably better for the subject field to be hard mapped regardless rather than relying on the substitution? 
   if ( !token.ring.subject.scale ) {
     delete token.ring.subject
   }
+  */
   return token
 }
 
@@ -17,14 +21,17 @@ const args = yargs(process.argv.slice(2))
         () => {
           yargs
             .positional("filename", {
-              describe: `A CSV file. The columns should contain the following data:  
-              1- Label (ignored)
-              2- Compendium ID
-              3- Actor ID
-              4- Actor image path
-              5- Token image path
-              6- Optional scale-ratio antecedent (consequent of 1)
-              7- Optional boolean indicating whether random images are to be enabled"
+              describe: `A CSV file. The first row is ignored since it's assumed to contain column headers. 
+              Subsequent rows should each correspond to a single creature and contain the following data in each column:  
+              A (0) - Label/name                                                                      nb: this field is ignored
+              B (1) - Compendium ID                                                                   nb: includes the system prefix, eg 'pf2e.pathfinder-bestiary'
+              C (2) - Actor ID                                                                        nb: short form, eg 'Z7xWkQKCHGyd02B1'
+              D (3) - Portrait image path
+              E (4) - Token image path
+              F (5) - Subject image path
+              G (6) - Optional scale value                                                            empty = default (1)
+              H (7) - Optional boolean indicating whether random images are to be enabled             empty = undefined
+              I (8) - Optional boolean indicating whether to enable dynamic token ring                empty = undefined, but it's recommended this should be enabled if there is subject artwork
             `
           });
         }
@@ -46,16 +53,17 @@ const jsonData = parser
         id: row[2],
         actor: row[3],
         token: {
-          randomImg: !!row[6] || undefined,
+          randomImg: !!row[7] || undefined,
           texture: {
             src: row[4], 
-            scaleX: Number(row[5]) || undefined, 
-            scaleY: Number(row[5]) || undefined,   
+            scaleX: Number(row[6]) || undefined, 
+            scaleY: Number(row[6]) || undefined,   
           },
           ring: {
-            enabled: true,
+            enabled: !!row[8] || undefined,
             subject: {
-              scale: Number(row[5]) || undefined
+              texture: row[5] || undefined,
+              scale: Number(row[6]) || undefined
             }
           }
         },
