@@ -11,6 +11,19 @@ function createTokenObject(token) {
     delete token.ring.subject
   }
   */
+
+  // Exception catcher for the Bestiaries token pack that fixes the mapping for oversized smalls
+  switch( token.ring.subject.scale ) {
+    case 1.2:
+      token.ring.subject.scale = 1.5
+      break
+    case 1.6:
+      token.ring.subject.scale = 2
+      break
+    default:
+      break
+  }
+
   return token
 }
 
