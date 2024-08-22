@@ -16,6 +16,10 @@ const args = yargs(process.argv.slice(2))
               - label (string)
               - source book (string)
               - scale (num) 
+              - Portrait path
+              - Thumbnail path
+              - Token path
+              - Subject path
               - ancestry tags (csv string => array)
               - category tags (csv string => array)
               - equipment tags (csv string => array)
@@ -44,19 +48,19 @@ const data = parser
       "key": row[1],
       "source": row[3],
       "art": {
-        "portrait" : "modules/pf2e-tokens-characters/assets/portraits/" + row[1] + ".webp",
-        "thumb" : "modules/pf2e-tokens-characters/assets/thumbnails/" + row[1] + ".webp",
-        "token" : "modules/pf2e-tokens-characters/assets/tokens/" + row[1] + ".webp",
-        "subject" : "modules/pf2e-tokens-characters/assets/subjects/" + row[1] + ".webp",
+        "portrait" : row[5],
+        "thumb" : row[6],
+        "token" : row[7],
+        "subject" : row[8],
         "scale" : Number(row[4]) || undefined,
       },
       "tags":  {
-        "ancestry" : row[5] ? row[5].toLowerCase().split(",") : undefined,
-        "category" : row[6] ? row[6].toLowerCase().split(",") : undefined,
-        "equipment" : row[7] ? row[7].toLowerCase().split(",") : undefined,
-        "features" : row[8] ? row[8].toLowerCase().split(",") : undefined,
-        "family" : row[9] ? row[9].toLowerCase().split(",") : undefined,
-        "special" : row[10] ? row[10].toLowerCase().split(",") : undefined,
+        "ancestry" : row[9] ? row[9].toLowerCase().split(",") : undefined,
+        "category" : row[10] ? row[10].toLowerCase().split(",") : undefined,
+        "equipment" : row[11] ? row[11].toLowerCase().split(",") : undefined,
+        "features" : row[12] ? row[12].toLowerCase().split(",") : undefined,
+        "family" : row[13] ? row[13].toLowerCase().split(",") : undefined,
+        "special" : row[14] ? row[14].toLowerCase().split(",") : undefined,
       },
     }))
     .map((element) => {
