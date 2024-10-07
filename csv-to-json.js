@@ -13,13 +13,13 @@ const args = yargs(process.argv.slice(2))
               describe: `Input is a CSV with the following data in each column: 
               - ignored
               - key (string)
-              - label (string)
-              - source book (string)
-              - scale (num) 
               - Portrait path
               - Thumbnail path
               - Token path
               - Subject path
+              - label (string)
+              - source book (string)
+              - scale (num) 
               - ancestry tags (csv string => array)
               - category tags (csv string => array)
               - equipment tags (csv string => array)
@@ -44,15 +44,15 @@ const data = parser
     .parse(csvData)
     .slice(1)
     .map((row) => ({
-      "label": row[2],
+      "label": row[6],
       "key": row[1],
-      "source": row[3],
+      "source": row[7],
       "art": {
-        "portrait" : row[5],
-        "thumb" : row[6],
-        "token" : row[7],
-        "subject" : row[8],
-        "scale" : Number(row[4]) || undefined,
+        "portrait" : row[2],
+        "thumb" : row[3],
+        "token" : row[4],
+        "subject" : row[5],
+        "scale" : Number(row[8]) || 1,
       },
       "tags":  {
         "ancestry" : row[9] ? row[9].toLowerCase().split(",") : undefined,
