@@ -1,11 +1,8 @@
-node csv-to-json.js <filename>
+Script supports two functions, which generate a mapping file or a datasheet respectively.
+They are run with the following commands:
 
+node csv-to-map.js <filename>
+node csv-to-datasheet.js <filename>
 
 <filename> = A CSV file 
-The first column of the CSV is ignored. 
-Columns 2-5 should be: 
-	- compendium ID, 
-	- actor ID, 
-	- actor image path, 
-	- token image path, 
-	- and finally an optional scale antecedent (consequent of 1)."
+The expected CSV formats are detailed in the respective files
