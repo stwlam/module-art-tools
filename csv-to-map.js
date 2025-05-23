@@ -36,9 +36,9 @@ const args = yargs(process.argv.slice(2))
               D (3) - Portrait image path
               E (4) - Token image path
               F (5) - Subject image path
-              G (6) - Optional scale value                                                            empty = default (1)
-              H (7) - Optional boolean indicating whether random images are to be enabled             empty = undefined
-              I (8) - Optional boolean indicating whether to enable dynamic token ring                empty = undefined, but it's recommended this should be enabled if there is subject artwork
+              G (6) - Optional scale value                                                            empty => default (1)
+              H (7) - Optional boolean indicating whether random images are to be enabled             empty/undefined => false
+              I (8) - Optional boolean indicating whether to enable dynamic token ring                empty/undefined => true (it's recommended this should be enabled if there is subject artwork)
             `
           });
         }
@@ -60,14 +60,14 @@ const jsonData = parser
         id: row[2],
         actor: row[3],
         token: {
-          randomImg: !!row[7] || undefined,
+          randomImg: (row[7]==="TRUE") ? true : false,
           texture: {
             src: row[4], 
             scaleX: Number(row[6]) || undefined, 
             scaleY: Number(row[6]) || undefined,   
           },
           ring: {
-            enabled: !!row[8] || undefined,
+            enabled: (row[8]==="FALSE") ? false : true,
             subject: {
               texture: row[5] || undefined,
               scale: Number(row[6]) || undefined
